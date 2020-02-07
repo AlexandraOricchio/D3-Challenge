@@ -31,31 +31,34 @@ d3.csv("assets/data/data.csv").then(function(data) {
         d.healthcare = +d.healthcare;
     });
 
-    console.log(d3.min(data, d => d.poverty));
-    console.log(d3.min(data, d => d.healthcare));
+    console.log(d3.extent(data, d => d.poverty));
+    console.log(d3.extent(data, d => d.healthcare));
+    
 
     // create x and y scale functions
     var xLinearScale = d3.scaleLinear()
-        .domain([8, d3.max(data, d => d.poverty)])
+        .domain([9, d3.max(data, d => d.poverty)])
         .range([0, chartWidth]);
 
     var yLinearScale = d3.scaleLinear()
-        .domain([0, d3.max(data, d => d.healthcare)])
+        .domain([4, d3.max(data, d => d.healthcare)])
         .range([chartHeight, 0]);
+    
     
     // create axis funtions
     var bottomAxis = d3.axisBottom(xLinearScale);
     var leftAxis = d3.axisLeft(yLinearScale);
 
+
     // append axes to chart
     chartGroup.append("g")
         .attr("transform", `translate(0, ${chartHeight})`)
         .call(bottomAxis);
-
     chartGroup.append("g")
         .call(leftAxis);
     
-    // create circles for scatter plot
+    
+    // create circles, state abbrvs and event listener
     var circlesGroup = chartGroup.selectAll("circle")
         .data(data)
         .enter();
@@ -64,17 +67,12 @@ d3.csv("assets/data/data.csv").then(function(data) {
         .attr("cx", d => xLinearScale(d.poverty))
         .attr("cy", d => yLinearScale(d.healthcare))
         .attr("r", "10")
-        .attr("stroke-width", "1px")
-        .attr("fill", "blue")
-        .attr("opacity", ".3")
         .attr("class", "stateCircle");
         
     circlesGroup.append("text")
         .attr("x", d => xLinearScale(d.poverty))
         .attr("y", d => yLinearScale(d.healthcare))
-        .attr("text-anchor", "middle")
-        .attr("alignment-basline", "central")
-        .attr("stroke-width", "1px")
+        .attr("class", "stateText")
         .attr("dy", "5px")
         .text(function(d) {
             return d.abbr;
@@ -97,12 +95,6 @@ d3.csv("assets/data/data.csv").then(function(data) {
     
     chartGroup.call(toolTip);
 
-    // circlesGroup.on("click", function(data) {
-    //     toolTip.show(data, this);
-    // })
-    //     .on("mouseout", function(data, index) {
-    //         toolTip.hide(data);
-    //     });
 
     // axes labels
     chartGroup.append("text")
