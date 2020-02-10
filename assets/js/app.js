@@ -73,7 +73,7 @@ function updateCircles(circlesGroup, newXscale, newYscale, chosenXaxis, chosenYa
 }
 
 // function to update circles group with new tooltip
-function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup) {
+function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup, newXscale, newYscale) {
     if (chosenXaxis === "poverty") {
         var labelX = "In Poverty (%)";
     }
@@ -82,10 +82,10 @@ function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup) {
     }
 
     if (chosenYaxis === "healthcare") {
-        var labelY = "Lack Healthcare (%)";
+        var labelY = "Lacks Healthcare (%)";
     }
     else {
-        var labelY = "Smokes (%)"
+        var labelY = "Smokes (%)";
     }
 
     var toolTip = d3.tip()
@@ -94,6 +94,7 @@ function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup) {
         .html(function(data, index) {
             return (`${data.state} <br> ${labelX}: ${data[chosenXaxis]} <br> ${labelY}: ${data[chosenYaxis]}`);
         });
+
     circlesGroup.call(toolTip);
 
     circlesGroup.on("click", function(data) {
@@ -102,7 +103,7 @@ function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup) {
     .on("mouseout", function(data, index) {
         toolTip.hide(data);
     });
-    
+
     return circlesGroup;
 }
 
@@ -213,7 +214,7 @@ d3.csv("assets/data/data.csv").then(function(ACSdata) {
         .text("Smokes (%)");
 
     // use update tooltip function
-    var circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup);
+    var circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup, xLinearScale, yLinearScale);
 
     // event listeners for X and Y axis labels
     labelGroupsX.selectAll("text")
@@ -228,7 +229,7 @@ d3.csv("assets/data/data.csv").then(function(ACSdata) {
                 xLinearScale = xScale(ACSdata, chosenXaxis);
                 xAxis = updateAxes(xLinearScale, xAxis);
                 circlesGroup = updateCircles(circlesGroup, xLinearScale, yLinearScale, chosenXaxis, chosenYaxis);
-                circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup);
+                circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup, xLinearScale, yLinearScale);
 
                 if (chosenXaxis === "age") {
                     ageLabel
@@ -258,7 +259,7 @@ d3.csv("assets/data/data.csv").then(function(ACSdata) {
                 yLinearScale = yScale(ACSdata, chosenYaxis);
                 yAxis = updateYaxis(yLinearScale, yAxis);
                 circlesGroup = updateCircles(circlesGroup, xLinearScale, yLinearScale, chosenXaxis, chosenYaxis);
-                circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup);
+                circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup, xLinearScale, yLinearScale);
 
                 if (chosenYaxis === "smokes") {
                     smokesLabel
