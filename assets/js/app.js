@@ -73,7 +73,7 @@ function updateCircles(circlesGroup, newXscale, newYscale, chosenXaxis, chosenYa
 }
 
 // function to update circles group with new tooltip
-function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup, newXscale, newYscale) {
+function updateToolTip(chosenXaxis, chosenYaxis, circlesGroup) {
     if (chosenXaxis === "poverty") {
         var labelX = "In Poverty (%)";
     }
@@ -141,7 +141,6 @@ d3.csv("assets/data/data.csv").then(function(ACSdata) {
     var yAxis = chartGroup.append("g")
         .call(leftAxis);
     
-    
     // create circles, state abbrvs 
     var circlesGroup = chartGroup.selectAll("circle")
         .data(ACSdata)
@@ -153,22 +152,20 @@ d3.csv("assets/data/data.csv").then(function(ACSdata) {
         .attr("class", "stateCircle");
     
     // ====================================================== State Abbrvs
+
+    // var circlesGroup = chartGroup.selectAll("circle")
+    //     .data(ACSdata)
+    //     .enter();
+    // circlesGroup.append("circle")
+    //     .attr("cx", d => xLinearScale(d[chosenXaxis]))
+    //     .attr("cy", d => yLinearScale(d[chosenYaxis]))
+    //     .attr("r", "10")
+    //     .attr("class", "stateCircle");
     // circlesGroup.append("text")
     //     .attr("x", d => xLinearScale(d[chosenXaxis]))
     //     .attr("y", d => yLinearScale(d[chosenYaxis]))
     //     .attr("class", "stateText")
     //     .attr("dy", "5px")
-    //     .text(function(d) {
-    //         console.log(d.abbr);
-    //         return d.abbr;
-    //     });
-
-    // chartGroup.selectAll("circle").append("text")
-    //     .attr("x", d => xLinearScale(d[chosenXaxis]))
-    //     .attr("y", d => yLinearScale(d[chosenYaxis]))
-    //     .attr("class", "stateText")
-    //     .attr("dy", "5px")
-    //     .attr("fill", "red")
     //     .text(function(d) {
     //         console.log(d.abbr);
     //         return d.abbr;
@@ -214,7 +211,8 @@ d3.csv("assets/data/data.csv").then(function(ACSdata) {
         .text("Smokes (%)");
 
     // use update tooltip function
-    var circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup, xLinearScale, yLinearScale);
+    var circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup);
+
 
     // event listeners for X and Y axis labels
     labelGroupsX.selectAll("text")
@@ -229,7 +227,7 @@ d3.csv("assets/data/data.csv").then(function(ACSdata) {
                 xLinearScale = xScale(ACSdata, chosenXaxis);
                 xAxis = updateAxes(xLinearScale, xAxis);
                 circlesGroup = updateCircles(circlesGroup, xLinearScale, yLinearScale, chosenXaxis, chosenYaxis);
-                circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup, xLinearScale, yLinearScale);
+                circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup);
 
                 if (chosenXaxis === "age") {
                     ageLabel
@@ -259,7 +257,7 @@ d3.csv("assets/data/data.csv").then(function(ACSdata) {
                 yLinearScale = yScale(ACSdata, chosenYaxis);
                 yAxis = updateYaxis(yLinearScale, yAxis);
                 circlesGroup = updateCircles(circlesGroup, xLinearScale, yLinearScale, chosenXaxis, chosenYaxis);
-                circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup, xLinearScale, yLinearScale);
+                circlesGroup = updateToolTip(chosenXaxis, chosenYaxis, circlesGroup);
 
                 if (chosenYaxis === "smokes") {
                     smokesLabel
