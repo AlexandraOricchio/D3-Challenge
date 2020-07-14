@@ -7,6 +7,9 @@ The editor wants to run a series of feature stories about the health risks facin
 ### Core Assignment 
 Using D3 techniques, I created a scatter plot that represents each state with a circle element. When you click on a circle element, a tooltip will display the state, the percentage in poverty and the percentage lacking healthcare. I added additional axis labels with event listeners so users can decide which demographics and risk factors to display on the scatter plot. 
 
+![screenshot](Images/html_screenshot_hover.png)
+
+
 ### The Data 
 The data set included with the assignment is based on 2014 ACS 1-year estimates: https://factfinder.census.gov/faces/nav/jsf/pages/searchresults.xhtml.  
 The current data set incldes data on rates of income, obesity, poverty, etc. by state. 
